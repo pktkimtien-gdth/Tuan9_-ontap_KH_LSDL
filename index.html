@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hành Trình Chinh Phục Đỉnh Tri Thức - Lớp 5</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Tone.js Sound Effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <!-- Google Fonts with full Vietnamese support -->
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 35%, #6366f1 70%, #8b5cf6 100%);
+            color: #1e293b;
+            min-height: 100vh;
+            user-select: none;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-fun {
+            font-family: 'Fredoka', 'Be Vietnam Pro', cursive, sans-serif;
+        }
+
+        /* Prevent page spill over vertically on desktop/mobile */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #f59e0b;
+            border-radius: 10px;
+        }
+
+        /* Bright Cartoon Panels */
+        .glass-panel-light {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(16px);
+            border: 4px solid #fef08a;
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.15);
+        }
+
+        .glass-header {
+            background: rgba(255, 255, 255, 0.96);
+            border-bottom: 4px solid #f59e0b;
+        }
+
+        /* Bouncy Button 3D Effect */
+        .btn-3d {
+            transition: all 0.1s ease;
+            box-shadow: 0 5px 0 var(--tw-shadow-color, #d97706);
+        }
+        .btn-3d:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 var(--tw-shadow-color, #d97706);
+        }
+
+        .btn-3d-blue {
+            --tw-shadow-color: #1d4ed8;
+        }
+        .btn-3d-green {
+            --tw-shadow-color: #15803d;
+        }
+        .btn-3d-red {
+            --tw-shadow-color: #b91c1c;
+        }
+
+        /* Floating Animation */
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: float-slow 3s ease-in-out infinite;
+        }
+
+        /* Pulse glow */
+        @keyframes pulse-star {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px #f59e0b); }
+            50% { transform: scale(1.12); filter: drop-shadow(0 0 18px #fbbf24); }
+        }
+        .animate-star {
+            animation: pulse-star 1.8s infinite ease-in-out;
+        }
+
+        .pair-item {
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .pair-item.selected {
+            transform: scale(1.03);
+            border-color: #f59e0b;
+            background-color: #fef3c7;
+            box-shadow: 0 0 0 3px #fcd34d;
+        }
+        .pair-item.matched {
+            opacity: 0.6;
+            pointer-events: none;
+            background-color: #d1fae5;
+            border-color: #10b981;
+        }
+
+        .draggable-item {
+            cursor: grab;
+            touch-action: none;
+        }
+        .draggable-item:active {
+            cursor: grabbing;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="w-full glass-header px-4 py-2.5 sticky top-0 z-40 flex justify-between items-center shadow-md shrink-0">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 md:w-11 md:h-11 rounded-2xl bg-gradient-to-tr from-amber-400 to-yellow-300 flex items-center justify-center text-indigo-950 font-black text-xl shadow-md border-2 border-amber-500 animate-float">
+                <i class="fa-solid fa-mountain-sun text-orange-600"></i>
+            </div>
+            <div>
+                <h1 class="font-black text-lg md:text-xl text-blue-900 tracking-tight leading-tight">CHINH PHỤC ĐỈNH TRI THỨC</h1>
+                <p class="text-[11px] font-extrabold text-amber-600 flex items-center gap-1">
+                    <i class="fa-solid fa-star text-yellow-500"></i> Khoa học & Lịch sử - Địa lí 5
+                </p>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-2">
+            <button onclick="openLeaderboard()" class="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-indigo-950 font-black text-xs md:text-sm flex items-center gap-1.5 btn-3d shadow transition">
+                <i class="fa-solid fa-trophy text-orange-700 text-sm"></i>
+                <span class="hidden md:inline">Bảng Xếp Hạng</span>
+            </button>
+            <button onclick="openMailbox()" class="relative px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs md:text-sm flex items-center gap-1.5 btn-3d btn-3d-blue shadow transition">
+                <i class="fa-solid fa-comment-dots text-yellow-300 text-sm"></i>
+                <span>Hỏi Cô AI</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN GAME WORKSPACE (FIT SCREEN WITHOUT OVERFLOW) -->
+    <main class="flex-1 max-w-5xl w-full mx-auto p-3 md:p-4 flex flex-col justify-center items-center relative overflow-y-auto custom-scrollbar">
+
+        <!-- SCREEN 1: WELCOME & START GAME -->
+        <section id="screen-welcome" class="w-full max-w-md glass-panel-light rounded-3xl p-5 md:p-7 text-center space-y-4 my-auto">
+            
+            <div class="relative w-24 h-24 mx-auto">
+                <div class="absolute inset-0 bg-yellow-400 rounded-full blur-xl opacity-60 animate-pulse"></div>
+                <!-- Animated SVG Avatar for Teacher AI -->
+                <div class="w-24 h-24 rounded-full border-4 border-amber-400 bg-amber-100 flex items-center justify-center relative z-10 shadow-inner overflow-hidden">
+                    <svg id="mascot-svg-welcome" viewBox="0 0 100 100" class="w-20 h-20">
+                        <circle cx="50" cy="50" r="45" fill="#fef08a" stroke="#f59e0b" stroke-width="3"/>
+                        <circle cx="35" cy="40" r="6" fill="#1e293b"/>
+                        <circle cx="65" cy="40" r="6" fill="#1e293b"/>
+                        <circle cx="37" cy="38" r="2" fill="#ffffff"/>
+                        <circle cx="67" cy="38" r="2" fill="#ffffff"/>
+                        <path d="M 35 60 Q 50 75 65 60" fill="none" stroke="#e11d48" stroke-width="4" stroke-linecap="round"/>
+                        <circle cx="25" cy="48" r="5" fill="#fda4af" opacity="0.7"/>
+                        <circle cx="75" cy="48" r="5" fill="#fda4af" opacity="0.7"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-2xl md:text-3xl font-black text-indigo-950 tracking-tight leading-snug">
+                    CHÀO MỪNG NHỮNG BÔNG HOA NHỎ HAM HỌC! 🌸✨
+                </h2>
+                <p class="text-slate-600 font-bold text-xs md:text-sm mt-1.5 leading-relaxed">
+                    Vượt 30 trạm thử thách siêu thú vị cùng trò chơi nối cặp, kéo thả, đúng sai và trắc nghiệm ngay nào!
+                </p>
+            </div>
+
+            <form onsubmit="startGame(event)" class="space-y-3 text-left">
+                <div>
+                    <label class="block text-xs font-black uppercase tracking-wider text-indigo-900 mb-1">Họ và Tên Học Sinh <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user-ninja absolute left-3.5 top-3 text-amber-500"></i>
+                        <input type="text" id="player-name" required placeholder="Nhập tên của em..." class="w-full bg-amber-50/90 border-2 border-amber-300 rounded-2xl py-2.5 pl-10 pr-4 text-sm text-indigo-950 font-bold placeholder-amber-400 focus:outline-none focus:ring-4 focus:ring-yellow-300">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-black uppercase tracking-wider text-indigo-900 mb-1">Lớp Học</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-school absolute left-3.5 top-3 text-amber-500"></i>
+                        <input type="text" id="player-class" placeholder="Ví dụ: 5A1" class="w-full bg-amber-50/90 border-2 border-amber-300 rounded-2xl py-2.5 pl-10 pr-4 text-sm text-indigo-950 font-bold placeholder-amber-400 focus:outline-none focus:ring-4 focus:ring-yellow-300">
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 hover:from-amber-300 hover:to-yellow-300 text-indigo-950 font-black text-lg rounded-2xl shadow-lg btn-3d transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rocket text-xl animate-bounce"></i>
+                        <span>BẮT ĐẦU CHINH PHỤC</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- SCREEN 2: GAMEPLAY MAP & QUESTION BOARD -->
+        <section id="screen-game" class="w-full hidden flex-col space-y-3 h-full">
+            
+            <!-- Game Top Status Bar -->
+            <div class="glass-panel-light rounded-2xl px-4 py-2 flex flex-wrap justify-between items-center gap-2 border-2 border-amber-300 shadow-sm shrink-0">
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-amber-400 border border-amber-600 flex items-center justify-center text-indigo-950 font-black text-base shadow-sm">
+                        <i class="fa-solid fa-user-astronaut"></i>
+                    </div>
+                    <div>
+                        <div id="display-player-name" class="font-black text-indigo-950 text-sm leading-tight">Học sinh</div>
+                        <div id="display-player-class" class="text-[10px] font-bold text-amber-700">Lớp 5</div>
+                    </div>
+                </div>
+
+                <!-- Live stats -->
+                <div class="flex items-center space-x-4 md:space-x-6">
+                    <div class="text-center">
+                        <div class="text-[10px] font-black text-slate-500 uppercase tracking-wider">Trạm Số</div>
+                        <div id="display-station" class="text-lg md:text-xl font-black text-blue-600 leading-tight">1 / 30</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-[10px] font-black text-slate-500 uppercase tracking-wider">Điểm Số</div>
+                        <div id="display-score" class="text-lg md:text-xl font-black text-amber-500 flex items-center justify-center gap-1 leading-tight">
+                            <i class="fa-solid fa-star text-yellow-400 animate-star text-sm"></i> <span id="score-val">0</span>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-[10px] font-black text-slate-500 uppercase tracking-wider">Thời Gian</div>
+                        <div id="display-timer" class="text-lg md:text-xl font-black text-emerald-600 leading-tight">00:00</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Bar Trail -->
+            <div class="glass-panel-light rounded-2xl px-3 py-2 border border-amber-300 relative overflow-hidden shrink-0">
+                <div class="flex justify-between items-center mb-1 text-[11px] font-black">
+                    <span class="text-emerald-700 flex items-center gap-1"><i class="fa-solid fa-flag-checkered"></i> Trạm 1</span>
+                    <span class="text-amber-600 flex items-center gap-1"><i class="fa-solid fa-crown text-yellow-500"></i> Trạm 30 (Đỉnh Núi)</span>
+                </div>
+                <div class="w-full bg-slate-200 rounded-full h-3 p-0.5 border border-slate-300">
+                    <div id="progress-bar-fill" class="bg-gradient-to-r from-emerald-400 via-amber-400 to-orange-500 h-full rounded-full transition-all duration-500" style="width: 3.33%;"></div>
+                </div>
+            </div>
+
+            <!-- Question & Interactive Board -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-start flex-1 min-h-0 overflow-y-auto custom-scrollbar">
+                
+                <!-- Main Question Area -->
+                <div class="lg:col-span-8 glass-panel-light rounded-3xl p-4 md:p-5 shadow-lg space-y-4">
+                    
+                    <!-- Question Header Badges -->
+                    <div class="flex justify-between items-center flex-wrap gap-2">
+                        <span id="question-category" class="px-3 py-0.5 rounded-full text-xs font-black bg-blue-100 text-blue-800 border border-blue-300">
+                            Khoa Học - Nhận Biết
+                        </span>
+                        <span id="question-type-badge" class="px-3 py-0.5 rounded-full text-xs font-black bg-amber-100 text-amber-800 border border-amber-300 flex items-center gap-1">
+                            <i id="type-icon" class="fa-solid fa-puzzle-piece"></i> <span id="type-name">Đa Dạng</span>
+                        </span>
+                    </div>
+
+                    <!-- Question Text -->
+                    <h3 id="question-text" class="text-lg md:text-xl font-black text-indigo-950 leading-snug">
+                        Đang tải câu hỏi...
+                    </h3>
+
+                    <!-- DYNAMIC INTERACTIVE CONTAINERS -->
+                    
+                    <!-- 1. Multiple Choice Options (MCQ) -->
+                    <div id="container-mcq" class="grid grid-cols-1 gap-2.5"></div>
+
+                    <!-- 2. True / False Container -->
+                    <div id="container-truefalse" class="hidden grid grid-cols-2 gap-3">
+                        <button onclick="checkTrueFalse(true)" class="py-5 px-3 bg-emerald-500 hover:bg-emerald-400 text-white font-black text-lg rounded-2xl btn-3d btn-3d-green transition flex flex-col items-center justify-center gap-1">
+                            <i class="fa-solid fa-circle-check text-3xl"></i>
+                            <span>ĐÚNG</span>
+                        </button>
+                        <button onclick="checkTrueFalse(false)" class="py-5 px-3 bg-rose-500 hover:bg-rose-400 text-white font-black text-lg rounded-2xl btn-3d btn-3d-red transition flex flex-col items-center justify-center gap-1">
+                            <i class="fa-solid fa-circle-xmark text-3xl"></i>
+                            <span>SAI</span>
+                        </button>
+                    </div>
+
+                    <!-- 3. Matching Pairs Container -->
+                    <div id="container-matching" class="hidden space-y-2">
+                        <p class="text-xs font-bold text-amber-700 italic"><i class="fa-solid fa-hand-pointer"></i> Nhấp 1 ô bên trái rồi nhấp ô tương ứng bên phải để ghép đôi!</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div id="matching-left" class="space-y-2"></div>
+                            <div id="matching-right" class="space-y-2"></div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Drag and Drop / Reorder Container -->
+                    <div id="container-dragdrop" class="hidden space-y-3">
+                        <p class="text-xs font-bold text-amber-700 italic"><i class="fa-solid fa-up-down-left-right"></i> Nhấp các mảnh dưới để xếp đúng vị trí trên!</p>
+                        <div id="drag-targets" class="grid grid-cols-1 sm:grid-cols-3 gap-2 min-h-[60px] p-2.5 bg-amber-50 rounded-2xl border-2 border-dashed border-amber-400"></div>
+                        <div id="drag-sources" class="flex flex-wrap gap-2 p-2.5 bg-indigo-50 rounded-2xl border-2 border-indigo-200"></div>
+                        <button onclick="checkDragDropAnswer()" class="w-full py-2.5 bg-amber-400 hover:bg-amber-300 text-indigo-950 font-black rounded-2xl btn-3d shadow transition text-sm">
+                            XÁC NHẬN KẾT QUẢ KÉO THẢ
+                        </button>
+                    </div>
+
+                    <!-- 5. Fill in the Blank Container -->
+                    <div id="container-fillblank" class="hidden space-y-3">
+                        <div id="blank-sentence" class="text-base font-bold text-indigo-900 bg-amber-50 p-3.5 rounded-2xl border-2 border-amber-300 leading-relaxed"></div>
+                        <div id="word-bank" class="flex flex-wrap gap-2"></div>
+                    </div>
+
+                    <!-- FEEDBACK BOX (AFTER ANSWERING) -->
+                    <div id="feedback-box" class="hidden p-3.5 rounded-2xl border-3 transition-all">
+                        <div class="flex items-start space-x-3">
+                            <div id="feedback-icon" class="text-2xl"></div>
+                            <div class="flex-1">
+                                <h4 id="feedback-title" class="font-black text-base"></h4>
+                                <p id="feedback-desc" class="text-xs md:text-sm font-bold mt-0.5 leading-relaxed"></p>
+                            </div>
+                        </div>
+                        <button id="btn-next-question" onclick="nextQuestion()" class="mt-3 w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-sm rounded-xl btn-3d btn-3d-blue transition flex items-center justify-center gap-2">
+                            <span>Tiến lên trạm tiếp theo</span>
+                            <i class="fa-solid fa-forward"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- Teacher AI Mascot Companion Card -->
+                <div class="lg:col-span-4 glass-panel-light rounded-3xl p-4 border-3 border-amber-300 shadow-lg flex flex-col items-center text-center space-y-3">
+                    
+                    <!-- Animated SVG Mascot Avatar -->
+                    <div class="relative w-20 h-20">
+                        <div class="absolute inset-0 bg-yellow-400/50 rounded-full blur-md animate-pulse"></div>
+                        <div class="w-20 h-20 rounded-full border-3 border-amber-400 bg-amber-100 flex items-center justify-center relative z-10 shadow">
+                            <svg id="mascot-svg-game" viewBox="0 0 100 100" class="w-16 h-16">
+                                <circle cx="50" cy="50" r="45" fill="#fef08a" stroke="#f59e0b" stroke-width="3"/>
+                                <!-- Eyes -->
+                                <circle id="eye-left" cx="35" cy="40" r="6" fill="#1e293b"/>
+                                <circle id="eye-right" cx="65" cy="40" r="6" fill="#1e293b"/>
+                                <circle cx="37" cy="38" r="2" fill="#ffffff"/>
+                                <circle cx="67" cy="38" r="2" fill="#ffffff"/>
+                                <!-- Mouth -->
+                                <path id="mascot-mouth" d="M 35 60 Q 50 75 65 60" fill="none" stroke="#e11d48" stroke-width="4" stroke-linecap="round"/>
+                                <!-- Cheeks -->
+                                <circle cx="25" cy="48" r="5" fill="#fda4af" opacity="0.7"/>
+                                <circle cx="75" cy="48" r="5" fill="#fda4af" opacity="0.7"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-black text-indigo-950 text-base">Cô Giáo AI Đồng Hành</h4>
+                        <p class="text-[10px] font-bold text-amber-600">Luôn cổ vũ & Giải đáp</p>
+                    </div>
+
+                    <!-- Speech Bubble -->
+                    <div class="w-full bg-amber-50 border-2 border-amber-300 rounded-2xl p-3 text-left relative shadow-sm">
+                        <div class="w-2.5 h-2.5 bg-amber-50 border-t-2 border-l-2 border-amber-300 transform rotate-45 absolute -top-1.5 left-1/2 -translate-x-1/2"></div>
+                        <p id="teacher-speech" class="text-xs text-indigo-900 font-bold italic leading-relaxed">
+                            "Chào mừng bông hoa nhỏ! Đọc kỹ câu hỏi để vượt qua trạm nhé!"
+                        </p>
+                    </div>
+
+                    <!-- Ask AI Helper -->
+                    <button onclick="askAIAboutCurrentQuestion()" class="w-full py-2.5 px-3 bg-amber-400 hover:bg-amber-300 text-indigo-950 font-black text-xs rounded-xl btn-3d shadow transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-wand-magic-sparkles text-amber-800"></i>
+                        <span>Nhờ Cô AI gợi ý ngay</span>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SCREEN 3: RESULT & CERTIFICATE SCREEN -->
+        <section id="screen-result" class="w-full max-w-2xl hidden glass-panel-light rounded-3xl p-6 md:p-8 text-center space-y-6">
+            
+            <div class="inline-block p-4 bg-yellow-300 rounded-full border-4 border-amber-400 shadow-lg animate-bounce">
+                <i class="fa-solid fa-trophy text-6xl text-amber-600"></i>
+            </div>
+
+            <div>
+                <h2 class="text-3xl md:text-4xl font-black text-indigo-950">HOÀN THÀNH CHINH PHỤC!</h2>
+                <p class="text-slate-600 font-bold text-sm mt-1">Em đã chinh phục thành công đỉnh núi Tri Thức rồi đấy!</p>
+            </div>
+
+            <!-- Stats grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="bg-amber-50 p-3 rounded-2xl border-2 border-amber-300">
+                    <div class="text-xs font-black text-slate-500">DẠNG ĐIỂM SỐ</div>
+                    <div id="res-score" class="text-2xl font-black text-amber-600">0 / 300</div>
+                </div>
+                <div class="bg-amber-50 p-3 rounded-2xl border-2 border-amber-300">
+                    <div class="text-xs font-black text-slate-500">SỐ CÂU ĐÚNG</div>
+                    <div id="res-correct" class="text-2xl font-black text-emerald-600">0 / 30</div>
+                </div>
+                <div class="bg-amber-50 p-3 rounded-2xl border-2 border-amber-300">
+                    <div class="text-xs font-black text-slate-500">THỜI GIAN</div>
+                    <div id="res-time" class="text-2xl font-black text-blue-600">00:00</div>
+                </div>
+                <div class="bg-amber-50 p-3 rounded-2xl border-2 border-amber-300">
+                    <div class="text-xs font-black text-slate-500">XẾP LOẠI</div>
+                    <div id="res-rank" class="text-base font-black text-purple-600">Xuất Sắc</div>
+                </div>
+            </div>
+
+            <!-- AI Evaluation Box -->
+            <div class="bg-amber-100/90 border-2 border-amber-400 rounded-2xl p-5 text-left space-y-2 relative shadow">
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="w-10 h-10 rounded-full bg-amber-400 border-2 border-amber-600 flex items-center justify-center font-bold text-indigo-950">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-black text-indigo-950 text-base">Nhận Xét Chi Tiết Từ Cô AI</h4>
+                        <span class="text-[10px] font-bold text-amber-700">Đánh giá năng lực toàn diện</span>
+                    </div>
+                </div>
+                <p id="res-ai-evaluation" class="text-sm font-bold text-indigo-950 leading-relaxed italic">
+                    Đang tổng hợp nhận xét...
+                </p>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                <button onclick="restartGame()" class="flex-1 py-4 bg-amber-400 hover:bg-amber-300 text-indigo-950 font-black text-base rounded-2xl btn-3d shadow transition">
+                    <i class="fa-solid fa-rotate-right mr-1"></i> CHƠI LẠI TRÒ CHƠI
+                </button>
+                <button onclick="openLeaderboard()" class="flex-1 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-base rounded-2xl btn-3d btn-3d-blue shadow transition">
+                    <i class="fa-solid fa-trophy mr-1"></i> XEM BẢNG XẾP HẠNG
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL 1: LEADERBOARD MODAL -->
+    <div id="modal-leaderboard" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel-light w-full max-w-lg rounded-3xl p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center border-b-2 border-amber-200 pb-3">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-trophy text-amber-500 text-2xl"></i>
+                    <h3 class="font-black text-xl text-indigo-950">Bảng Xếp Hạng Thần Đồng</h3>
+                </div>
+                <button onclick="closeLeaderboard()" class="w-9 h-9 rounded-full bg-amber-100 text-amber-800 font-black hover:bg-amber-200 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div id="leaderboard-list" class="flex-1 overflow-y-auto custom-scrollbar space-y-2 pr-1"></div>
+
+            <div class="pt-2 text-center">
+                <button onclick="closeLeaderboard()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 font-black text-white rounded-2xl text-sm btn-3d btn-3d-blue">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: AI MAILBOX / CHAT -->
+    <div id="modal-mailbox" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel-light w-full max-w-xl rounded-3xl p-5 shadow-2xl space-y-4 h-[85vh] flex flex-col">
+            <div class="flex justify-between items-center border-b-2 border-amber-200 pb-3">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-amber-400 border-2 border-amber-600 flex items-center justify-center font-bold text-indigo-950">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-lg text-indigo-950">Hỏi Đáp Cùng Cô AI</h3>
+                        <p class="text-[11px] font-bold text-amber-700">Giải đáp chi tiết mọi câu hỏi Khoa học & Lịch sử</p>
+                    </div>
+                </div>
+                <button onclick="closeMailbox()" class="w-9 h-9 rounded-full bg-amber-100 text-amber-800 font-black hover:bg-amber-200 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div id="chat-messages" class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-3 bg-amber-50 rounded-2xl border-2 border-amber-200">
+                <div class="flex items-start space-x-2">
+                    <div class="w-8 h-8 rounded-full bg-amber-400 border border-amber-600 flex items-center justify-center text-xs font-bold shrink-0">AI</div>
+                    <div class="bg-white border-2 border-amber-300 p-3 rounded-2xl rounded-tl-none max-w-[85%] text-xs md:text-sm text-indigo-950 font-bold leading-relaxed shadow-sm">
+                        Chào em! Có câu hỏi nào em chưa hiểu rõ, cứ thoải mái hỏi Cô nhé! Cô sẽ giải thích thật vui và dễ hiểu! 😊✨
+                    </div>
+                </div>
+            </div>
+
+            <form onsubmit="sendChatMessage(event)" class="flex gap-2 pt-1">
+                <input type="text" id="chat-input" placeholder="Nhập thắc mắc của em cho Cô..." class="flex-1 bg-white border-2 border-amber-300 rounded-2xl px-4 py-3 text-xs md:text-sm text-indigo-950 font-bold placeholder-amber-400 focus:outline-none focus:ring-4 focus:ring-yellow-300">
+                <button type="submit" class="px-5 py-3 bg-amber-400 hover:bg-amber-300 text-indigo-950 font-black rounded-2xl text-xs md:text-sm btn-3d transition flex items-center gap-1">
+                    <span>Gửi</span>
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* ----------------------------------------------------
+           1. EXPANDED DIVERSE QUESTION DATABASE (30 STATIONS)
+        ---------------------------------------------------- */
+        const quizDatabase = [
+            // 1. MCQ
+            {
+                id: 1,
+                subject: "Khoa Học",
+                level: "Nhận biết (30%)",
+                type: "mcq",
+                question: "Đâu là các thể cơ bản của chất đã được học trong chương trình Khoa học lớp 5?",
+                options: [
+                    "A. Thể rắn, thể lỏng, thể khí.",
+                    "B. Thể cứng, thể mềm, thể bay hơi.",
+                    "C. Thể rắn, thể mềm, thể đặc.",
+                    "D. Thể lỏng, thể khí, thể dung dịch."
+                ],
+                correct: 0,
+                explanation: "Chất xung quanh chúng ta tồn tại ở 3 thể cơ bản: Thể rắn (đá), thể lỏng (nước), và thể khí (hơi nước)."
+            },
+            // 2. True / False
+            {
+                id: 2,
+                subject: "Khoa Học",
+                level: "Nhận biết (30%)",
+                type: "truefalse",
+                question: "Mặt trời, gió, nước chảy và than đá đều là những nguồn năng lượng thông dụng trong đời sống.",
+                correct: true,
+                explanation: "Đúng rồi! Đây là các nguồn cung cấp năng lượng quan trọng cho con người."
+            },
+            // 3. Matching Pairs
+            {
+                id: 3,
+                subject: "Khoa Học",
+                level: "Hiểu (40%)",
+                type: "matching",
+                question: "Hãy nối hiện tượng ở cột trái với loại biến đổi tương ứng ở cột phải:",
+                pairs: [
+                    { left: "Nước đá tan thành nước", right: "Biến đổi trạng thái" },
+                    { left: "Đun đường cháy đen khét", right: "Biến đổi hóa học" },
+                    { left: "Dây chun kéo giãn rồi thả", right: "Biến đổi hình dạng" }
+                ],
+                explanation: "Biến đổi trạng thái/hình dạng giữ nguyên bản chất chất, còn biến đổi hóa học tạo ra chất mới!"
+            },
+            // 4. Fill in the blank
+            {
+                id: 4,
+                subject: "Khoa Học",
+                level: "Hiểu (40%)",
+                type: "fillblank",
+                question: "Chọn từ thích hợp điền vào chỗ trống về mạch điện đơn giản:",
+                sentence: "Trong mạch điện, bộ phận cung cấp năng lượng điện được gọi là [BLANK].",
+                correctWord: "Pin",
+                wordBank: ["Pin", "Bóng đèn", "Dây dẫn", "Công tắc"],
+                explanation: "Pin đóng vai trò là nguồn điện cung cấp năng lượng cho mạch."
+            },
+            // 5. MCQ
+            {
+                id: 5,
+                subject: "Khoa Học",
+                level: "Vận dụng (30%)",
+                type: "mcq",
+                question: "Khi làm thí nghiệm lắp mạch điện, bóng đèn không sáng khi đóng công tắc. Nguyên nhân có thể là gì?",
+                options: [
+                    "A. Dây nối chắc chắn vào 2 cực.",
+                    "B. Pin mới và đúng chiều.",
+                    "C. Dây nối nhầm vào 1 cực hoặc pin đã hết điện.",
+                    "D. Công tắc đóng kín."
+                ],
+                correct: 2,
+                explanation: "Mạch điện phải kín và nối đủ 2 cực âm - dương thì dòng điện mới chạy qua."
+            },
+            // 6. True / False
+            {
+                id: 6,
+                subject: "Khoa Học",
+                level: "Vận dụng (30%)",
+                type: "truefalse",
+                question: "Nhựa và cao su được dùng làm vỏ dây điện vì chúng là vật DẪN ĐIỆN rất tốt.",
+                correct: false,
+                explanation: "Sai rồi! Nhựa và cao su là chất CÁCH ĐIỆN giúp bảo vệ an toàn, tránh điện giật."
+            },
+            // 7. Drag & Drop Reorder
+            {
+                id: 7,
+                subject: "Khoa Học",
+                level: "Nhận biết (30%)",
+                type: "dragdrop",
+                question: "Kéo thả các bộ phận để hoàn thành mạch điện thắp sáng đơn giản:",
+                items: ["Nguồn điện (Pin)", "Dây dẫn điện", "Bóng đèn tiêu thụ"],
+                explanation: "Mạch điện thắp sáng cơ bản gồm Nguồn điện, Dây dẫn và Thiết bị tiêu thụ."
+            },
+            // 8. Matching Pairs
+            {
+                id: 8,
+                subject: "Khoa Học",
+                level: "Hiểu (40%)",
+                type: "matching",
+                question: "Nối chất với đặc điểm truyền điện/nhiệt tương ứng:",
+                pairs: [
+                    { left: "Đồng, Nhôm", right: "Dẫn điện tốt" },
+                    { left: "Nhựa, Gỗ khô", right: "Cách điện tốt" }
+                ],
+                explanation: "Kim loại dẫn điện tốt, còn nhựa và gỗ khô là vật cách điện."
+            },
+            // 9. True / False
+            {
+                id: 9,
+                subject: "Khoa Học",
+                level: "Vận dụng (30%)",
+                type: "truefalse",
+                question: "Khi tay bị ướt, chạm vào ổ cắm điện vẫn an toàn vì nước không dẫn điện.",
+                correct: false,
+                explanation: "Rất nguy hiểm! Nước dẫn điện rất tốt, tay ướt chạm vào điện dễ bị điện giật!"
+            },
+            // 10. Fill in the blank
+            {
+                id: 10,
+                subject: "Khoa Học",
+                level: "Vận dụng (30%)",
+                type: "fillblank",
+                question: "Điền từ thích hợp vào quy tắc tiết kiệm điện tại trường học:",
+                sentence: "Chúng ta nên tắt đèn và quạt khi [BLANK] khỏi phòng học.",
+                correctWord: "đi ra",
+                wordBank: ["đi ra", "đi vào", "đang ngồi", "đang chơi"],
+                explanation: "Tắt thiết bị điện khi ra khỏi phòng giúp tiết kiệm năng lượng điện!"
+            },
+
+            // --- LỊCH SỬ & ĐỊA LÍ (20 CÂU) ---
+            // 11. MCQ
+            {
+                id: 11,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Nhận biết (30%)",
+                type: "mcq",
+                question: "Vị trí địa lí nước ta nằm ở khu vực nào trên thế giới?",
+                options: [
+                    "A. Khu vực Nam Á.",
+                    "B. Khu vực Đông Nam Á, trên bán đảo Đông Dương.",
+                    "C. Khu vực Tây Á.",
+                    "D. Khu vực Đông Bắc Á."
+                ],
+                correct: 1,
+                explanation: "Việt Nam nằm ở Đông Nam Á, trên bán đảo Đông Dương."
+            },
+            // 12. Matching
+            {
+                id: 12,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Nhận biết (30%)",
+                type: "matching",
+                question: "Nối tên triều đại/quốc gia cổ với tên Kinh đô tương ứng:",
+                pairs: [
+                    { left: "Nước Văn Lang", right: "Phong Châu (Phú Thọ)" },
+                    { left: "Nước Âu Lạc", right: "Cổ Loa (Hà Nội)" }
+                ],
+                explanation: "Văn Lang đóng đô ở Phong Châu, Âu Lạc đóng đô ở Cổ Loa."
+            },
+            // 13. True / False
+            {
+                id: 13,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Nhận biết (30%)",
+                type: "truefalse",
+                question: "Nhà nước Âu Lạc do Thục Phán (An Dương Vương) đứng đầu thành lập vào khoảng thế kỷ III TCN.",
+                correct: true,
+                explanation: "Chính xác! Thục Phán hợp nhất Tây Âu và Lạc Việt lập ra nước Âu Lạc."
+            },
+            // 14. MCQ
+            {
+                id: 14,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Nhận biết (30%)",
+                type: "mcq",
+                question: "Vương quốc cổ Chăm-pa nổi tiếng với công trình kiến trúc văn hóa tiêu biểu nào?",
+                options: [
+                    "A. Đền tháp Chăm-pa (như Mỹ Sơn, Po Nagar).",
+                    "B. Lăng tẩm vua triều Nguyễn.",
+                    "C. Thành cổ Sơn Tây.",
+                    "D. Chùa Một Cột."
+                ],
+                correct: 0,
+                explanation: "Người Chăm-pa nổi tiếng với nghệ thuật xây đền tháp bằng gạch nung."
+            },
+            // 15. Fill in the blank
+            {
+                id: 15,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Nhận biết (30%)",
+                type: "fillblank",
+                question: "Chọn từ thích hợp điền vào câu về địa bàn Vương quốc Phù Nam:",
+                sentence: "Địa bàn sinh sống chủ yếu của Vương quốc cổ Phù Nam trước đây thuộc vùng [BLANK] nước ta ngày nay.",
+                correctWord: "Nam Bộ",
+                wordBank: ["Nam Bộ", "Bắc Bộ", "Trung Bộ", "Tây Nguyên"],
+                explanation: "Vương quốc Phù Nam từng phát triển rực rỡ ở vùng Nam Bộ (văn hóa Óc Eo)."
+            },
+            // 16. MCQ
+            {
+                id: 16,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Nhận biết (30%)",
+                type: "mcq",
+                question: "Hiện vật khảo cổ tiêu biểu chứng minh trình độ đúc đồng đỉnh cao của người Văn Lang - Âu Lạc là gì?",
+                options: [
+                    "A. Trống đồng Đông Sơn.",
+                    "B. Bia đá thời Lê.",
+                    "C. Súng thần công.",
+                    "D. Tranh Đông Hồ."
+                ],
+                correct: 0,
+                explanation: "Trống đồng Đông Sơn là đỉnh cao nghệ thuật đúc đồng của tổ tiên."
+            },
+            // 17. True / False
+            {
+                id: 17,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Hiểu (40%)",
+                type: "truefalse",
+                question: "Thành Cổ Loa và nỏ thần được An Dương Vương xây dựng chỉ để làm cảnh quan du lịch.",
+                correct: false,
+                explanation: "Sai rồi! Đó là những công trình quân sự vĩ đại nhằm bảo vệ đất nước chống giặc xâm lược!"
+            },
+            // 18. Matching
+            {
+                id: 18,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Hiểu (40%)",
+                type: "matching",
+                question: "Nối truyền thuyết dân gian với bài học/ý nghĩa tương ứng:",
+                pairs: [
+                    { left: "Sơn Tinh - Thủy Tinh", right: "Công cuộc đắp đê trị thủy" },
+                    { left: "Thánh Gióng", right: "Sức mạnh đánh giặc giữ nước" },
+                    { left: "Bánh chưng, bánh giầy", right: "Thành tựu trồng lúa nước" }
+                ],
+                explanation: "Mỗi truyền thuyết đều phản ánh một khía cạnh đời sống quý báu của người Việt cổ."
+            },
+            // 19. Fill in the blank
+            {
+                id: 19,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Hiểu (40%)",
+                type: "fillblank",
+                question: "Điền từ còn thiếu vào nhận định đời sống người Lạc Việt:",
+                sentence: "Nghề kinh tế chính của cư dân Văn Lang - Âu Lạc là trồng [BLANK].",
+                correctWord: "lúa nước",
+                wordBank: ["lúa nước", "lúa mì", "cây ngô", "cây chè"],
+                explanation: "Trồng lúa nước là nền tảng kinh tế chủ đạo của tổ tiên ta."
+            },
+            // 20. MCQ
+            {
+                id: 20,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Vận dụng (30%)",
+                type: "mcq",
+                question: "Từ bài học An Dương Vương để mất nước Âu Lạc vào tay Triệu Đà, ta rút ra kinh nghiệm gì?",
+                options: [
+                    "A. Chỉ cần xây tường thành thật cao.",
+                    "B. Luôn cảnh giác, đoàn kết toàn dân để bảo vệ chủ quyền.",
+                    "C. Giao hết việc nước cho người thân.",
+                    "D. Không cần phát triển vũ khí."
+                ],
+                correct: 1,
+                explanation: "Luôn nêu cao tinh thần cảnh giác và dựa vào sức mạnh đoàn kết toàn dân."
+            },
+            // 21. True / False
+            {
+                id: 21,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Vận dụng (30%)",
+                type: "truefalse",
+                question: "Nước ta có đường bờ biển dài 3260 km, giáp biển Đông nên rất thuận lợi cho giao thương hàng hải quốc tế.",
+                correct: true,
+                explanation: "Chính xác! Vị trí địa lý ven biển mang lại tiềm năng kinh tế rất lớn."
+            },
+            // 22. MCQ
+            {
+                id: 22,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Vận dụng (30%)",
+                type: "mcq",
+                question: "Di tích văn hóa Chăm-pa nào ở nước ta đã được UNESCO công nhận là Di sản Văn hóa Thế giới?",
+                options: [
+                    "A. Thánh địa Mỹ Sơn.",
+                    "B. Tòa nhà Landmark 81.",
+                    "C. Cầu Vàng Đà Nẵng.",
+                    "D. Pháo đài hiện đại."
+                ],
+                correct: 0,
+                explanation: "Thánh địa Mỹ Sơn (Quảng Nam) là di sản văn hóa thế giới nổi tiếng."
+            },
+            // 23. Fill in the blank
+            {
+                id: 23,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Nhận biết (30%)",
+                type: "fillblank",
+                question: "Điền thời gian ra đời của nước Văn Lang:",
+                sentence: "Nhà nước Văn Lang ra đời vào khoảng thế kỷ [BLANK] TCN.",
+                correctWord: "VII",
+                wordBank: ["VII", "I", "XV", "XXI"],
+                explanation: "Nước Văn Lang ra đời vào thế kỷ VII TCN."
+            },
+            // 24. Drag & drop
+            {
+                id: 24,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Nhận biết (30%)",
+                type: "dragdrop",
+                question: "Sắp xếp tên các vị thủ lĩnh dựng nước đầu tiên theo đúng thứ tự lịch sử:",
+                items: ["Các Vua Hùng (Văn Lang)", "An Dương Vương (Âu Lạc)"],
+                explanation: "Vua Hùng lập nước Văn Lang trước, sau đó An Dương Vương lập nước Âu Lạc."
+            },
+            // 25. True / False
+            {
+                id: 25,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Hiểu (40%)",
+                type: "truefalse",
+                question: "Vương quốc Phù Nam được hình thành từ cuộc hôn nhân truyền thuyết giữa Hỗn Điền và Liễu Diệp.",
+                correct: true,
+                explanation: "Đúng rồi! Truyền thuyết kể về sự kết hợp lập nên nước Phù Nam."
+            },
+            // 26. Matching
+            {
+                id: 26,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Hiểu (40%)",
+                type: "matching",
+                question: "Nối đặc điểm đời sống vật chất của người Lạc Việt:",
+                pairs: [
+                    { left: "Trang phục nam", right: "Đóng khố, cởi trần" },
+                    { left: "Trang phục nữ", right: "Mặc váy, áo xẻ ngực" },
+                    { left: "Kiểu nhà ở", right: "Nhà sàn mái cong" }
+                ],
+                explanation: "Người Việt cổ ở nhà sàn để tránh ẩm thấp và thú dữ."
+            },
+            // 27. Fill in the blank
+            {
+                id: 27,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Vận dụng (30%)",
+                type: "fillblank",
+                question: "Bánh chưng hình vuông tượng trưng cho đất, Bánh giầy hình tròn tượng trưng cho [BLANK].",
+                sentence: "Bánh giầy tượng trưng cho [BLANK].",
+                correctWord: "Trời",
+                wordBank: ["Trời", "Biển", "Sông", "Mặt Trăng"],
+                explanation: "Theo quan niệm xưa: Bánh chưng tượng trưng cho Đất, Bánh giầy tượng trưng cho Trời."
+            },
+            // 28. MCQ
+            {
+                id: 28,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Vận dụng (30%)",
+                type: "mcq",
+                question: "Thành Cổ Loa có cấu trúc 3 vòng xoáy ốc khép kín kết hợp hào nước thể hiện điều gì?",
+                options: [
+                    "A. Trình độ kiến trúc quân sự độc đáo, tài tình của người Việt cổ.",
+                    "B. Sự lãng phí tiền bạc của triều đình.",
+                    "C. Xây ngẫu nhiên không có ý đồ.",
+                    "D. Xây để làm bãi chăn nuôi."
+                ],
+                correct: 0,
+                explanation: "Cổ Loa là một kiệt tác kiến trúc quân sự phòng thủ của tổ tiên ta."
+            },
+            // 29. True / False
+            {
+                id: 29,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Vận dụng cao (30%)",
+                type: "truefalse",
+                question: "Hình tượng Thánh Gióng vươn vai lớn nhanh như thổi thể hiện sức mạnh đoàn kết và lòng yêu nước nồng nàn của dân tộc ta.",
+                correct: true,
+                explanation: "Chính xác! Thánh Gióng biểu tượng cho sức mạnh quật cường của nhân dân."
+            },
+            // 30. MCQ
+            {
+                id: 30,
+                subject: "Lịch Sử & Địa Lí",
+                level: "Vận dụng cao (30%)",
+                type: "mcq",
+                question: "Từ lịch sử các quốc gia cổ Văn Lang, Âu Lạc, Chăm-pa, Phù Nam, em rút ra kết luận gì về văn minh Việt Nam?",
+                options: [
+                    "A. Nền văn minh Việt Nam có cội nguồn lâu đời hàng nghìn năm và rất đáng tự hào.",
+                    "B. Văn minh Việt Nam vừa mới xuất hiện gần đây.",
+                    "C. Nước ta không có lịch sử lâu đời.",
+                    "D. Lịch sử nước ta không có gì đặc sắc."
+                ],
+                correct: 0,
+                explanation: "Dân tộc Việt Nam có bề dày lịch sử hàng nghìn năm rực rỡ và giàu bản sắc!"
+            }
+        ];
+
+        /* ----------------------------------------------------
+           2. MASCOT ANIMATION & SOUND CONTROLLER
+        ---------------------------------------------------- */
+        function setMascotMood(mood) {
+            const mouth = document.getElementById("mascot-mouth");
+            const eyeL = document.getElementById("eye-left");
+            const eyeR = document.getElementById("eye-right");
+            if (!mouth) return;
+
+            if (mood === 'happy') {
+                mouth.setAttribute("d", "M 35 60 Q 50 75 65 60");
+                eyeL.setAttribute("r", "6");
+                eyeR.setAttribute("r", "6");
+            } else if (mood === 'cheer') {
+                mouth.setAttribute("d", "M 32 55 Q 50 82 68 55 Z");
+                mouth.setAttribute("fill", "#e11d48");
+            } else if (mood === 'sad') {
+                mouth.setAttribute("d", "M 35 68 Q 50 52 65 68");
+                mouth.setAttribute("fill", "none");
+            } else if (mood === 'think') {
+                mouth.setAttribute("d", "M 38 62 L 62 62");
+                mouth.setAttribute("fill", "none");
+            }
+        }
+
+        function playSound(type) {
+            try {
+                if (type === 'pop') {
+                    const synth = new Tone.Synth().toDestination();
+                    synth.triggerAttackRelease("E5", "16n");
+                } else if (type === 'correct') {
+                    const synth = new Tone.PolySynth().toDestination();
+                    synth.triggerAttackRelease(["C5", "E5", "G5"], "8n");
+                } else if (type === 'wrong') {
+                    const synth = new Tone.Synth().toDestination();
+                    synth.triggerAttackRelease("A3", "8n");
+                } else if (type === 'win') {
+                    const synth = new Tone.PolySynth().toDestination();
+                    synth.triggerAttackRelease(["C4", "E4", "G4", "C5", "E5"], "4n");
+                }
+            } catch(e) {}
+        }
+
+        /* ----------------------------------------------------
+           3. GAME STATE MANAGEMENT
+        ---------------------------------------------------- */
+        let gameState = {
+            playerName: "",
+            playerClass: "",
+            currentIndex: 0,
+            score: 0,
+            correctCount: 0,
+            timer: 0,
+            timerInterval: null,
+            matchingSelected: null,
+            matchingMatchedCount: 0,
+            draggedItems: []
+        };
+
+        function startGame(e) {
+            e.preventDefault();
+            const name = document.getElementById("player-name").value.trim();
+            const cls = document.getElementById("player-class").value.trim() || "5A";
+            if (!name) return;
+
+            gameState.playerName = name;
+            gameState.playerClass = cls;
+            gameState.currentIndex = 0;
+            gameState.score = 0;
+            gameState.correctCount = 0;
+            gameState.timer = 0;
+
+            document.getElementById("screen-welcome").classList.add("hidden");
+            document.getElementById("screen-game").classList.remove("hidden");
+            document.getElementById("screen-game").classList.add("flex");
+
+            document.getElementById("display-player-name").innerText = gameState.playerName;
+            document.getElementById("display-player-class").innerText = "Lớp " + gameState.playerClass;
+
+            startTimer();
+            loadQuestion();
+        }
+
+        function startTimer() {
+            clearInterval(gameState.timerInterval);
+            gameState.timerInterval = setInterval(() => {
+                gameState.timer++;
+                const m = String(Math.floor(gameState.timer / 60)).padStart(2, '0');
+                const s = String(gameState.timer % 60).padStart(2, '0');
+                document.getElementById("display-timer").innerText = `${m}:${s}`;
+            }, 1000);
+        }
+
+        /* ----------------------------------------------------
+           4. QUESTION RENDERERS (MCQ, TRUE/FALSE, MATCHING, DRAG, FILL)
+        ---------------------------------------------------- */
+        function loadQuestion() {
+            const q = quizDatabase[gameState.currentIndex];
+
+            // Progress Header
+            document.getElementById("display-station").innerText = `${gameState.currentIndex + 1} / ${quizDatabase.length}`;
+            document.getElementById("score-val").innerText = gameState.score;
+            document.getElementById("progress-bar-fill").style.width = `${((gameState.currentIndex + 1) / quizDatabase.length) * 100}%`;
+
+            document.getElementById("question-category").innerText = `${q.subject} • ${q.level}`;
+            document.getElementById("question-text").innerText = `Trạm ${q.id}: ${q.question}`;
+
+            // Reset containers
+            const cMcq = document.getElementById("container-mcq");
+            const cTf = document.getElementById("container-truefalse");
+            const cMatch = document.getElementById("container-matching");
+            const cDrag = document.getElementById("container-dragdrop");
+            const cFill = document.getElementById("container-fillblank");
+            const fbBox = document.getElementById("feedback-box");
+
+            [cMcq, cTf, cMatch, cDrag, cFill, fbBox].forEach(el => el.classList.add("hidden"));
+            setMascotMood('happy');
+
+            const typeBadge = document.getElementById("type-name");
+            const typeIcon = document.getElementById("type-icon");
+
+            // Render specific type
+            if (q.type === 'mcq') {
+                typeBadge.innerText = "Trắc Nghiệm";
+                typeIcon.className = "fa-solid fa-list-check";
+                cMcq.classList.remove("hidden");
+                renderMCQ(q);
+            } else if (q.type === 'truefalse') {
+                typeBadge.innerText = "Đúng / Sai";
+                typeIcon.className = "fa-solid fa-toggle-on";
+                cTf.classList.remove("hidden");
+            } else if (q.type === 'matching') {
+                typeBadge.innerText = "Nối Cặp";
+                typeIcon.className = "fa-solid fa-link";
+                cMatch.classList.remove("hidden");
+                renderMatching(q);
+            } else if (q.type === 'dragdrop') {
+                typeBadge.innerText = "Kéo Thả";
+                typeIcon.className = "fa-solid fa-hand-grab-o";
+                cDrag.classList.remove("hidden");
+                renderDragDrop(q);
+            } else if (q.type === 'fillblank') {
+                typeBadge.innerText = "Điền Khuyết";
+                typeIcon.className = "fa-solid fa-pen-to-square";
+                cFill.classList.remove("hidden");
+                renderFillBlank(q);
+            }
+
+            document.getElementById("teacher-speech").innerText = `Trạm ${q.id} đang chờ em! Hãy tự tin thể hiện tài năng nhé! ✨`;
+        }
+
+        // MCQ
+        function renderMCQ(q) {
+            const container = document.getElementById("container-mcq");
+            container.innerHTML = "";
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement("button");
+                btn.className = "w-full text-left p-4 rounded-2xl bg-amber-50 hover:bg-amber-200 border-2 border-amber-300 text-indigo-950 font-bold text-base btn-3d shadow transition flex items-center justify-between";
+                btn.innerHTML = `<span>${opt}</span> <i class="fa-solid fa-circle-dot text-amber-500"></i>`;
+                btn.onclick = () => checkMCQ(idx);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkMCQ(idx) {
+            const q = quizDatabase[gameState.currentIndex];
+            handleFeedback(idx === q.correct, q.options[q.correct], q.explanation);
+        }
+
+        // TRUE / FALSE
+        function checkTrueFalse(userVal) {
+            const q = quizDatabase[gameState.currentIndex];
+            handleFeedback(userVal === q.correct, q.correct ? "ĐÚNG" : "SAI", q.explanation);
+        }
+
+        // MATCHING PAIRS
+        function renderMatching(q) {
+            gameState.matchingSelected = null;
+            gameState.matchingMatchedCount = 0;
+            const leftCol = document.getElementById("matching-left");
+            const rightCol = document.getElementById("matching-right");
+            leftCol.innerHTML = "";
+            rightCol.innerHTML = "";
+
+            // Shuffle rights for challenge
+            const shuffledRights = [...q.pairs].map(p => p.right).sort(() => Math.random() - 0.5);
+
+            q.pairs.forEach((p, i) => {
+                const lBtn = document.createElement("button");
+                lBtn.className = "pair-item w-full p-3 rounded-2xl bg-white border-2 border-blue-300 font-bold text-sm text-indigo-950 text-left shadow-sm";
+                lBtn.innerText = p.left;
+                lBtn.dataset.index = i;
+                lBtn.onclick = () => selectMatchingLeft(lBtn, i);
+                leftCol.appendChild(lBtn);
+            });
+
+            shuffledRights.forEach((rText) => {
+                const rBtn = document.createElement("button");
+                rBtn.className = "pair-item w-full p-3 rounded-2xl bg-white border-2 border-purple-300 font-bold text-sm text-indigo-950 text-left shadow-sm";
+                rBtn.innerText = rText;
+                rBtn.onclick = () => selectMatchingRight(rBtn, rText);
+                rightCol.appendChild(rBtn);
+            });
+        }
+
+        function selectMatchingLeft(el, idx) {
+            playSound('pop');
+            document.querySelectorAll("#matching-left .pair-item").forEach(b => b.classList.remove("selected"));
+            el.classList.add("selected");
+            gameState.matchingSelected = { el, idx };
+        }
+
+        function selectMatchingRight(rBtn, rText) {
+            if (!gameState.matchingSelected) return;
+            playSound('pop');
+            const q = quizDatabase[gameState.currentIndex];
+            const correctRight = q.pairs[gameState.matchingSelected.idx].right;
+
+            if (rText === correctRight) {
+                gameState.matchingSelected.el.classList.remove("selected");
+                gameState.matchingSelected.el.classList.add("matched");
+                rBtn.classList.add("matched");
+                gameState.matchingSelected = null;
+                gameState.matchingMatchedCount++;
+
+                if (gameState.matchingMatchedCount === q.pairs.length) {
+                    handleFeedback(true, "Ghép chính xác tất cả các cặp!", q.explanation);
+                }
+            } else {
+                rBtn.classList.add("bg-rose-100", "border-rose-400");
+                setTimeout(() => rBtn.classList.remove("bg-rose-100", "border-rose-400"), 500);
+            }
+        }
+
+        // DRAG AND DROP
+        function renderDragDrop(q) {
+            gameState.draggedItems = [];
+            const targets = document.getElementById("drag-targets");
+            const sources = document.getElementById("drag-sources");
+            targets.innerHTML = "";
+            sources.innerHTML = "";
+
+            const shuffled = [...q.items].sort(() => Math.random() - 0.5);
+
+            q.items.forEach((_, i) => {
+                const box = document.createElement("div");
+                box.className = "p-3 rounded-xl bg-white border-2 border-amber-300 text-xs font-black text-amber-800 text-center min-h-[45px] flex items-center justify-center shadow-sm";
+                box.innerText = `Vị trí ${i + 1}`;
+                box.dataset.slot = i;
+                targets.appendChild(box);
+            });
+
+            shuffled.forEach((itemText) => {
+                const chip = document.createElement("button");
+                chip.className = "draggable-item px-3 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-indigo-950 font-black text-xs btn-3d shadow transition";
+                chip.innerText = itemText;
+                chip.onclick = () => placeDragItem(chip, itemText);
+                sources.appendChild(chip);
+            });
+        }
+
+        function placeDragItem(chip, text) {
+            playSound('pop');
+            const targets = document.querySelectorAll("#drag-targets div");
+            const emptyTarget = Array.from(targets).find(t => t.dataset.filled !== "true");
+            if (emptyTarget) {
+                emptyTarget.innerText = text;
+                emptyTarget.dataset.filled = "true";
+                emptyTarget.classList.add("bg-amber-200", "border-amber-500");
+                gameState.draggedItems.push(text);
+                chip.style.display = "none";
+            }
+        }
+
+        function checkDragDropAnswer() {
+            const q = quizDatabase[gameState.currentIndex];
+            const isCorrect = JSON.stringify(gameState.draggedItems) === JSON.stringify(q.items);
+            handleFeedback(isCorrect, q.items.join(" ➔ "), q.explanation);
+        }
+
+        // FILL IN THE BLANK
+        function renderFillBlank(q) {
+            const sentenceEl = document.getElementById("blank-sentence");
+            const wordBankEl = document.getElementById("word-bank");
+            sentenceEl.innerHTML = q.sentence.replace("[BLANK]", `<span id="blank-target" class="px-3 py-1 bg-amber-200 border-2 border-dashed border-amber-500 text-amber-900 font-black rounded-lg">_____</span>`);
+            wordBankEl.innerHTML = "";
+
+            q.wordBank.forEach((word) => {
+                const btn = document.createElement("button");
+                btn.className = "px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-sm rounded-xl btn-3d btn-3d-blue shadow transition";
+                btn.innerText = word;
+                btn.onclick = () => selectFillBlankWord(word);
+                wordBankEl.appendChild(btn);
+            });
+        }
+
+        function selectFillBlankWord(word) {
+            playSound('pop');
+            const target = document.getElementById("blank-target");
+            target.innerText = word;
+            target.className = "px-3 py-1 bg-amber-400 text-indigo-950 font-black rounded-lg border-2 border-amber-500 animate-bounce";
+
+            const q = quizDatabase[gameState.currentIndex];
+            setTimeout(() => {
+                handleFeedback(word === q.correctWord, q.correctWord, q.explanation);
+            }, 400);
+        }
+
+        /* ----------------------------------------------------
+           5. UNIVERSAL FEEDBACK HANDLER
+        ---------------------------------------------------- */
+        function handleFeedback(isCorrect, answerText, explanationText) {
+            const fbBox = document.getElementById("feedback-box");
+            const fbIcon = document.getElementById("feedback-icon");
+            const fbTitle = document.getElementById("feedback-title");
+            const fbDesc = document.getElementById("feedback-desc");
+            const speech = document.getElementById("teacher-speech");
+
+            fbBox.classList.remove("hidden", "bg-emerald-100", "border-emerald-400", "bg-rose-100", "border-rose-400");
+
+            if (isCorrect) {
+                gameState.score += 10;
+                gameState.correctCount++;
+                playSound('correct');
+                setMascotMood('cheer');
+
+                try { confetti({ particleCount: 40, spread: 70, origin: { y: 0.7 } }); } catch(e){}
+
+                fbBox.classList.add("bg-emerald-100", "border-emerald-400");
+                fbIcon.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600"></i>`;
+                fbTitle.className = "font-black text-lg text-emerald-800";
+                fbTitle.innerText = "XUẤT SẮC! +10 ĐIỂM";
+                fbDesc.innerText = explanationText;
+
+                speech.innerText = "Giỏi lắm em ơi! Trả lời chính xác 100%! Tiến lên nào! 🚀✨";
+            } else {
+                playSound('wrong');
+                setMascotMood('sad');
+                fbBox.classList.add("bg-rose-100", "border-rose-400");
+                fbIcon.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600"></i>`;
+                fbTitle.className = "font-black text-lg text-rose-800";
+                fbTitle.innerText = "CHƯA CHÍNH XÁC RỒI!";
+                fbDesc.innerHTML = `Đáp án đúng: <strong>${answerText}</strong><br><span class="text-xs font-semibold text-slate-700">${explanationText}</span>`;
+
+                speech.innerText = "Đừng buồn nhé! Sai một tí để nhớ lâu hơn mà. Cùng cố gắng câu sau nha! 💪🌱";
+            }
+
+            document.getElementById("score-val").innerText = gameState.score;
+            fbBox.classList.remove("hidden");
+        }
+
+        function nextQuestion() {
+            gameState.currentIndex++;
+            if (gameState.currentIndex < quizDatabase.length) {
+                loadQuestion();
+            } else {
+                finishGame();
+            }
+        }
+
+        function finishGame() {
+            clearInterval(gameState.timerInterval);
+            playSound('win');
+            setMascotMood('cheer');
+
+            try { confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 } }); } catch(e){}
+
+            document.getElementById("screen-game").classList.add("hidden");
+            document.getElementById("screen-result").classList.remove("hidden");
+
+            const m = Math.floor(gameState.timer / 60);
+            const s = gameState.timer % 60;
+            const timeStr = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+            document.getElementById("res-score").innerText = `${gameState.score} / 300`;
+            document.getElementById("res-correct").innerText = `${gameState.correctCount} / 30`;
+            document.getElementById("res-time").innerText = timeStr;
+
+            let rank = "Cố Gắng 👍";
+            if (gameState.score >= 260) rank = "Xuất Sắc 🏆";
+            else if (gameState.score >= 200) rank = "Giỏi 🌟";
+            else if (gameState.score >= 150) rank = "Khá ✨";
+            document.getElementById("res-rank").innerText = rank;
+
+            document.getElementById("res-ai-evaluation").innerText = 
+                `Em ${gameState.playerName} đã vượt qua 30 trạm chướng ngại vật cực kỳ xuất sắc! Cô khen ngợi tinh thần học hỏi và sự thông minh của em! 🎉💖`;
+
+            saveScoreToLeaderboard({
+                name: gameState.playerName,
+                class: gameState.playerClass,
+                score: gameState.score,
+                correct: gameState.correctCount,
+                time: timeStr,
+                date: new Date().toLocaleDateString('vi-VN')
+            });
+        }
+
+        function restartGame() {
+            document.getElementById("screen-result").classList.add("hidden");
+            document.getElementById("screen-welcome").classList.remove("hidden");
+        }
+
+        /* ----------------------------------------------------
+           6. LEADERBOARD & AI CHAT MODAL
+        ---------------------------------------------------- */
+        function saveScoreToLeaderboard(entry) {
+            let leaderboard = JSON.parse(localStorage.getItem("tri_thuc_lb_v2") || "[]");
+            leaderboard.push(entry);
+            leaderboard.sort((a, b) => b.score - a.score);
+            leaderboard = leaderboard.slice(0, 10);
+            localStorage.setItem("tri_thuc_lb_v2", JSON.stringify(leaderboard));
+        }
+
+        function openLeaderboard() {
+            const leaderboard = JSON.parse(localStorage.getItem("tri_thuc_lb_v2") || "[]");
+            const container = document.getElementById("leaderboard-list");
+            container.innerHTML = "";
+
+            if (leaderboard.length === 0) {
+                container.innerHTML = `<div class="text-center text-slate-500 py-6 font-bold">Chưa có ai chinh phục! Hãy là người đầu tiên nào!</div>`;
+            } else {
+                leaderboard.forEach((item, index) => {
+                    const row = document.createElement("div");
+                    row.className = "p-3 rounded-2xl bg-amber-50 border-2 border-amber-200 flex justify-between items-center shadow-sm";
+                    row.innerHTML = `
+                        <div class="flex items-center space-x-3">
+                            <span class="w-7 h-7 rounded-full bg-amber-400 text-indigo-950 font-black flex items-center justify-center text-sm shadow-sm">${index + 1}</span>
+                            <div>
+                                <div class="font-black text-indigo-950 text-sm">${item.name} <span class="text-xs font-bold text-amber-700">(${item.class})</span></div>
+                                <div class="text-[10px] font-bold text-slate-400">${item.date} • ${item.time}</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-black text-amber-600 text-base">${item.score} đ</div>
+                            <div class="text-[10px] font-bold text-emerald-600">${item.correct}/30 câu đúng</div>
+                        </div>
+                    `;
+                    container.appendChild(row);
+                });
+            }
+
+            document.getElementById("modal-leaderboard").classList.remove("hidden");
+        }
+
+        function closeLeaderboard() {
+            document.getElementById("modal-leaderboard").classList.add("hidden");
+        }
+
+        function openMailbox() {
+            document.getElementById("modal-mailbox").classList.remove("hidden");
+        }
+
+        function closeMailbox() {
+            document.getElementById("modal-mailbox").classList.add("hidden");
+        }
+
+        function askAIAboutCurrentQuestion() {
+            const q = quizDatabase[gameState.currentIndex];
+            openMailbox();
+            document.getElementById("chat-input").value = `Cô ơi gợi ý giúp em trạm ${q.id}: "${q.question}"`;
+            sendChatMessage(new Event('submit'));
+        }
+
+        async function sendChatMessage(e) {
+            e.preventDefault();
+            const inputEl = document.getElementById("chat-input");
+            const query = inputEl.value.trim();
+            if (!query) return;
+
+            const chatMessages = document.getElementById("chat-messages");
+            
+            // User msg
+            const uDiv = document.createElement("div");
+            uDiv.className = "flex justify-end";
+            uDiv.innerHTML = `<div class="bg-indigo-600 text-white p-3 rounded-2xl rounded-tr-none max-w-[85%] text-xs md:text-sm font-bold leading-relaxed shadow">${query}</div>`;
+            chatMessages.appendChild(uDiv);
+            inputEl.value = "";
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Loading msg
+            const loadingDiv = document.createElement("div");
+            loadingDiv.className = "flex items-start space-x-2";
+            loadingDiv.id = "ai-loader";
+            loadingDiv.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-amber-400 border border-amber-600 flex items-center justify-center text-xs font-bold shrink-0">AI</div>
+                <div class="bg-white border-2 border-amber-300 p-3 rounded-2xl text-xs text-amber-800 font-bold italic flex items-center gap-2">
+                    <i class="fa-solid fa-spinner animate-spin"></i> Cô AI đang suy nghĩ câu trả lời cho em...
+                </div>
+            `;
+            chatMessages.appendChild(loadingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            try {
+                const systemPrompt = "Bạn là Cô giáo AI tiểu học vô cùng thân thiện, tươi vui, dí dỏm và am hiểu sâu sắc Khoa học & Lịch sử Lớp 5. Trả lời học sinh ngắn gọn, dễ hiểu và tràn đầy năng lượng tích cực!";
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: query }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] }
+                    })
+                });
+
+                const data = await response.json();
+                const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Cô luôn ở đây hỗ trợ em! Em thử hỏi lại nhé!";
+
+                document.getElementById("ai-loader").remove();
+
+                const aiDiv = document.createElement("div");
+                aiDiv.className = "flex items-start space-x-2";
+                aiDiv.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-amber-400 border border-amber-600 flex items-center justify-center text-xs font-bold shrink-0">AI</div>
+                    <div class="bg-white border-2 border-amber-300 p-3 rounded-2xl rounded-tl-none max-w-[85%] text-xs md:text-sm text-indigo-950 font-bold leading-relaxed shadow-sm">
+                        ${reply}
+                    </div>
+                `;
+                chatMessages.appendChild(aiDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            } catch(err) {
+                if (document.getElementById("ai-loader")) document.getElementById("ai-loader").remove();
+            }
+        }
+    </script>
+</body>
+</html>
